@@ -1,0 +1,42 @@
+{
+  "<project_name>": {
+    "backend": {
+      "apps": {
+        "javascript": {
+          "modules": {}
+        },
+        "python": {
+          "modules": {}
+        },
+        "r": {
+          "modules": {}
+        }
+      }
+    },
+    "batch_files": {},
+    "powershell": {},
+    "logs": {},
+    "data": {
+      "in": {},
+      "out": {}
+    },
+    "frontend": {
+      "testdata": {
+        "in": {},
+        "out": {}
+      },
+      "apps": {
+        "javascript": {
+          "modules": {}
+        }
+      },
+      "config": {},
+      "index.html": null
+    },
+    "notebooks": {},
+    ".gitignore": null,
+    ".env": null,
+    ".flaskenv": null,
+    "README.md": null
+  }
+}
