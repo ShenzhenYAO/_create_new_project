@@ -1,0 +1,203 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>Project File Explorer</title>
+    <script src="https://d3js.org/d3.v7.min.js"></script>
+    <style>
+        body { font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif; margin: 20px; background-color: #f4f6f9; }
+        
+        .node { cursor: pointer; }
+        .node rect { fill: #fff; stroke: none; }
+        .node text { font-size: 14px; fill: #333; }
+        .node:hover text { fill: #007bff; font-weight: bold; }
+        
+        .link { fill: none; stroke: #999; stroke-width: 1px; shape-rendering: crispEdges; }
+        
+        #tree-container { width: 100%; height: 100vh; }
+    </style>
+</head>
+<body>
+    <div id="tree-container"></div>
+
+    <script>
+        const treeData = {"name": "_create_new_project", "type": "folder", "children": [{"name": ".git", "type": "folder", "children": [{"name": "hooks", "type": "folder", "children": [{"name": "applypatch-msg.sample", "type": "file"}, {"name": "commit-msg.sample", "type": "file"}, {"name": "fsmonitor-watchman.sample", "type": "file"}, {"name": "post-update.sample", "type": "file"}, {"name": "pre-applypatch.sample", "type": "file"}, {"name": "pre-commit.sample", "type": "file"}, {"name": "pre-merge-commit.sample", "type": "file"}, {"name": "pre-push.sample", "type": "file"}, {"name": "pre-rebase.sample", "type": "file"}, {"name": "pre-receive.sample", "type": "file"}, {"name": "prepare-commit-msg.sample", "type": "file"}, {"name": "push-to-checkout.sample", "type": "file"}, {"name": "sendemail-validate.sample", "type": "file"}, {"name": "update.sample", "type": "file"}]}, {"name": "info", "type": "folder", "children": [{"name": "exclude", "type": "file"}]}, {"name": "logs", "type": "folder", "children": [{"name": "refs", "type": "folder", "children": [{"name": "heads", "type": "folder", "children": [{"name": "master", "type": "file"}]}, {"name": "remotes", "type": "folder", "children": [{"name": "origin", "type": "folder", "children": [{"name": "master", "type": "file"}]}]}]}, {"name": "HEAD", "type": "file"}]}, {"name": "objects", "type": "folder", "children": [{"name": "03", "type": "folder", "children": [{"name": "7a986f155b282708a8708f539e5ab9666bb9f3", "type": "file"}]}, {"name": "06", "type": "folder", "children": [{"name": "04d96a6db4b8b457946c4faff510c40fe029f3", "type": "file"}, {"name": "d101843a993b8bbd81ebf29731579ba2619289", "type": "file"}]}, {"name": "14", "type": "folder", "children": [{"name": "56f124f3949647934470971a0a5e92577ec5cd", "type": "file"}]}, {"name": "18", "type": "folder", "children": [{"name": "7eee05ac34db09d348c8a969b20544fc069267", "type": "file"}]}, {"name": "22", "type": "folder", "children": [{"name": "bb2a56c29bea4a8e22c247eeb581100f45ce06", "type": "file"}]}, {"name": "23", "type": "folder", "children": [{"name": "834f05db897e97cdf92f0355165b07180d7be3", "type": "file"}]}, {"name": "2b", "type": "folder", "children": [{"name": "5d400712dae0025e20947397605cd81974b593", "type": "file"}]}, {"name": "2c", "type": "folder", "children": [{"name": "5a2d01ec20a844ae4cba98dea4b4b6ef2e1640", "type": "file"}]}, {"name": "36", "type": "folder", "children": [{"name": "4fe07813befb9bce297affef646d4f9273b1a2", "type": "file"}, {"name": "dac3ba2bdb24ac205e0c8001ab95713dfa1d14", "type": "file"}]}, {"name": "4c", "type": "folder", "children": [{"name": "4b57f57e139add6c4399ffc04dd2ded3e94f21", "type": "file"}]}, {"name": "4e", "type": "folder", "children": [{"name": "1f98585d3f915b639acdf67ca7aa2840790ce4", "type": "file"}]}, {"name": "52", "type": "folder", "children": [{"name": "18d119fba78cce6e9e69ee626b9dfa6a721ace", "type": "file"}, {"name": "47db1e9e7f0295b050f8db196f20d7df78edaa", "type": "file"}]}, {"name": "53", "type": "folder", "children": [{"name": "d7fd3676304580f998fde30bfe28d66cb84314", "type": "file"}]}, {"name": "61", "type": "folder", "children": [{"name": "eb6535d2746723f7c2e44c888e4b33ef805fe1", "type": "file"}]}, {"name": "66", "type": "folder", "children": [{"name": "c7a4e82ada660acabf7c1ac8cd58595f808eab", "type": "file"}]}, {"name": "78", "type": "folder", "children": [{"name": "7788f0ef83f8d579317ca84f1ad42de92ff75b", "type": "file"}]}, {"name": "7a", "type": "folder", "children": [{"name": "8b84991a690ccc897fbf795f38609767c45b29", "type": "file"}]}, {"name": "7f", "type": "folder", "children": [{"name": "058b747db4e9e186a5f3182bd5613a68b8ef12", "type": "file"}, {"name": "fcd8f292101d77b7f0483b6c94597020fad4bd", "type": "file"}]}, {"name": "81", "type": "folder", "children": [{"name": "087fc40fdfb6dcc95cd91e2036c2abc82751f2", "type": "file"}, {"name": "0a7905d10f3822ce40fb8cc301f9ee27a8beeb", "type": "file"}]}, {"name": "8b", "type": "folder", "children": [{"name": "93f342f584e461f4b0b75f98e1cda6209e0ad7", "type": "file"}]}, {"name": "90", "type": "folder", "children": [{"name": "b89dc7a2c24ebd303d3bd05a27b87bb9a0ccf6", "type": "file"}]}, {"name": "a2", "type": "folder", "children": [{"name": "1ef7e37bceeb018660b81361d1b7832a3c7332", "type": "file"}]}, {"name": "ba", "type": "folder", "children": [{"name": "93d8cd89f5a6938a27effd0894399b099b1b0e", "type": "file"}]}, {"name": "bd", "type": "folder", "children": [{"name": "53590697135dad065e893140410285d6c44d3c", "type": "file"}]}, {"name": "cf", "type": "folder", "children": [{"name": "a36c08681fbd1a12f0d96d127b13649c624c7d", "type": "file"}]}, {"name": "d0", "type": "folder", "children": [{"name": "c9fa64f44ea2264a4ea48314775c49348bcfa9", "type": "file"}]}, {"name": "db", "type": "folder", "children": [{"name": "8cf182b4ca2029618e540e95e20e819fd609cf", "type": "file"}]}, {"name": "dc", "type": "folder", "children": [{"name": "5a2e5499a057a09751abf54199d3fe20ce9987", "type": "file"}]}, {"name": "e1", "type": "folder", "children": [{"name": "840aa4a11344ba39c904360ee0b6069d5e41a6", "type": "file"}, {"name": "da3f0c95c6474003d81938804e0c552639c075", "type": "file"}]}, {"name": "e6", "type": "folder", "children": [{"name": "9de29bb2d1d6434b8b29ae775ad8c2e48c5391", "type": "file"}]}, {"name": "e7", "type": "folder", "children": [{"name": "b49470db9fdcc2fa96f2dfe1a8696b4b39a77b", "type": "file"}]}, {"name": "ed", "type": "folder", "children": [{"name": "de3152dfa2c45f72c342b1117da465bd433cde", "type": "file"}]}, {"name": "ef", "type": "folder", "children": [{"name": "f0e14f6473fa7661cf5851a49a245beb014200", "type": "file"}]}, {"name": "fb", "type": "folder", "children": [{"name": "df0eab4718fe6510fc06d710ec6a8d9fa01cda", "type": "file"}]}, {"name": "fc", "type": "folder", "children": [{"name": "b3512c39d1f84c8b4034fe92925ee906b780fb", "type": "file"}]}, {"name": "info", "type": "folder"}, {"name": "pack", "type": "folder"}]}, {"name": "refs", "type": "folder", "children": [{"name": "heads", "type": "folder", "children": [{"name": "master", "type": "file"}]}, {"name": "remotes", "type": "folder", "children": [{"name": "origin", "type": "folder", "children": [{"name": "master", "type": "file"}]}]}, {"name": "tags", "type": "folder"}]}, {"name": "COMMIT_EDITMSG", "type": "file"}, {"name": "config", "type": "file"}, {"name": "description", "type": "file"}, {"name": "FETCH_HEAD", "type": "file"}, {"name": "HEAD", "type": "file"}, {"name": "index", "type": "file"}, {"name": "ORIG_HEAD", "type": "file"}]}, {"name": "batch_files", "type": "folder", "children": [{"name": "make_venv.bat", "type": "file"}, {"name": "unrestrict_and_activate_venv_windows_py310_01.bat", "type": "file"}]}, {"name": "data", "type": "folder", "children": [{"name": "in", "type": "folder", "children": [{"name": "_project_structure.json", "type": "file"}]}]}, {"name": "notebook", "type": "folder", "children": [{"name": "__make_files_map.ipynb", "type": "file"}, {"name": "_create_new_project.ipynb", "type": "file"}, {"name": "_export_notebook_to_py.ipynb", "type": "file"}]}, {"name": "README.md", "type": "file"}, {"name": "sitemap.txt", "type": "file"}]};
+
+        // Configuration
+        const barHeight = 25; 
+        const indent = 25;    
+        const duration = 400; 
+        
+        const margin = {top: 20, right: 20, bottom: 20, left: 20};
+        
+        const svg = d3.select("#tree-container").append("svg")
+            .attr("width", "100%")
+            .attr("height", "100%") 
+            .append("g")
+            .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
+
+        let root = d3.hierarchy(treeData);
+        let i = 0;
+
+        // --- 1. Collapse Logic ---
+        function initialCollapse(d) {
+            if (d.children) {
+                d._children = d.children;
+                d._children.forEach(initialCollapse);
+                d.children = null;
+            }
+        }
+        
+        // Keep Level 1 expanded, collapse deeper levels
+        if (root.children) {
+            root.children.forEach(child => {
+                if (child.children) {
+                    child._children = child.children;
+                    child._children.forEach(initialCollapse);
+                    child.children = null;
+                }
+            });
+        }
+
+        // Setup Root
+        root.x0 = 0;
+        root.y0 = 0;
+        
+        update(root);
+
+        function update(source) {
+            
+            // --- 2. Calculate Flat List Positions ---
+            const nodes = [];
+            let index = 0;
+            
+            root.eachBefore(d => {
+                d.x = index * barHeight; 
+                d.y = d.depth * indent; 
+                index++;
+                nodes.push(d);
+            });
+
+            const height = Math.max(500, index * barHeight + margin.top + margin.bottom);
+            d3.select("svg").transition()
+                .duration(duration)
+                .attr("height", height);
+
+            // ****************** Nodes Section ******************
+            const node = svg.selectAll(".node")
+                .data(nodes, d => d.id || (d.id = ++i));
+
+            const nodeEnter = node.enter().append("g")
+                .attr("class", "node")
+                .attr("transform", d => `translate(${source.y0},${source.x0})`) 
+                .style("opacity", 0)
+                .on("click", click);
+
+            // --- ICON LOGIC ---
+            // We check d.data.type (set in Python) instead of d.children
+            nodeEnter.append("text")
+                .attr("x", -12)
+                .attr("y", 5)
+                .style("font-size", "14px")
+                .text(d => {
+                    if (d.data.type === 'folder') {
+                        // If folder is open (has children), show open icon.
+                        // Otherwise (closed or empty), show closed icon.
+                        return d.children ? "📂" : "📁";
+                    } else {
+                        return "📄";
+                    }
+                });
+
+            // Label
+            nodeEnter.append("text")
+                .attr("dy", 3.5)
+                .attr("dx", 5.5)
+                .text(d => d.data.name);
+
+            // Update Nodes 
+            const nodeUpdate = node.merge(nodeEnter);
+
+            nodeUpdate.transition()
+                .duration(duration)
+                .attr("transform", d => `translate(${d.y},${d.x})`)
+                .style("opacity", 1);
+            
+            // Update Icon on click (toggle open/closed)
+            nodeUpdate.select("text")
+                .text(d => {
+                    if (d.data.type === 'folder') {
+                        return d.children ? "📂" : "📁";
+                    } else {
+                        return "📄";
+                    }
+                });
+
+            // Exit Nodes 
+            const nodeExit = node.exit().transition()
+                .duration(duration)
+                .attr("transform", d => `translate(${source.y},${source.x})`)
+                .style("opacity", 0)
+                .remove();
+
+            // ****************** Links Section ******************
+            const links = svg.selectAll(".link")
+                .data(root.links(), d => d.target.id);
+
+            const linkEnter = links.enter().insert("path", "g")
+                .attr("class", "link")
+                .attr("d", d => {
+                    const o = {x: source.x0, y: source.y0};
+                    return elbow(o, o);
+                });
+
+            const linkUpdate = links.merge(linkEnter);
+
+            linkUpdate.transition()
+                .duration(duration)
+                .attr("d", d => elbow(d.source, d.target));
+
+            const linkExit = links.exit().transition()
+                .duration(duration)
+                .attr("d", d => {
+                    const o = {x: source.x, y: source.y};
+                    return elbow(o, o);
+                })
+                .remove();
+
+            nodes.forEach(d => {
+                d.x0 = d.x;
+                d.y0 = d.y;
+            });
+
+            // --- 3. Elbow Connector Logic ---
+            function elbow(s, d) {
+                const yOffset = 7; 
+                const xOffset = -7; 
+                
+                return `M ${s.y + xOffset} ${s.x + 15}
+                        V ${d.x + yOffset}
+                        H ${d.y - 15}`;
+            }
+
+            function click(event, d) {
+                // Only folders can be clicked to toggle
+                if (d.data.type === 'folder') {
+                    if (d.children) {
+                        d._children = d.children;
+                        d.children = null;
+                    } else {
+                        // If it has hidden children, expand them
+                        if (d._children) {
+                            d.children = d._children;
+                            d._children = null;
+                        }
+                        // If it is an empty folder, do nothing (no children to expand)
+                    }
+                    update(d);
+                }
+            }
+        }
+    </script>
+</body>
+</html>
