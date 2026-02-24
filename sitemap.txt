@@ -1,0 +1,12 @@
+_create_new_project/
+├── batch_files
+│   ├── make_venv.bat
+│   └── unrestrict_and_activate_venv_windows_py310_01.bat
+├── data
+│   └── in
+│       └── _project_structure.json
+├── notebook
+│   ├── __make_files_map.ipynb
+│   ├── _create_new_project.ipynb
+│   └── _export_notebook_to_py.ipynb
+└── README.md
