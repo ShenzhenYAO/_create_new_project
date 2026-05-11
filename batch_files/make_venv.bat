@@ -12,7 +12,8 @@ echo Machine model: %MODEL_RAW%
 
 if /I "%BRAND%"=="lenovo" (
     if /I "%MODEL%"=="30G9S0PN00" (
-        C:\Users\syao2\AppData\Local\Programs\Python\Python310\python.exe -m venv venv_windows_py310_01
+        @REM C:\Users\syao2\AppData\Local\Programs\Python\Python310\python.exe -m venv venv_windows_py310_01
+        C:\ProgramData\Python312\python.exe -m venv venv_windows_py312_01
         goto :eof
     )
 )
