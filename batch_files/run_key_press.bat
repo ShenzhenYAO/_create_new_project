@@ -1,0 +1,1 @@
+powershell -ExecutionPolicy Unrestricted -File "\\VCHAhome1.vch.ca\syao2-VRHB\Work\projects\_create_new_project\powershell\auto_key_press.ps1"
