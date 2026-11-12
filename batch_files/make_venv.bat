@@ -19,7 +19,7 @@ if /I "%BRAND%"=="lenovo" (
 )
 
 if /I "%BRAND%"=="dell inc." (
-    "C:\Program Files\Python310\python.exe" -m venv venv_windows_py310_01
+    "C:\Program Files\Python312\python.exe" -m venv venv_windows_py312_01
     goto :eof
 )
 
