@@ -16,6 +16,10 @@ avoid creating new venv to save space, run the following to activate venv1:
 or venv2: 
 `source /projects_wsl/fine_tuning_new/venv_wsl_310_v2/bin/activate`
 
+## make requirements.txt
+
+pip freeze > requirements.txt
+python -m pip install -r requirements.txt
 
 ## python notebook
 
